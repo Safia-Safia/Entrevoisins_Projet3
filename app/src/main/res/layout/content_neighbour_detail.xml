@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#35AFAFAF"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:background="#FFF"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textView_subTitle_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="22sp"
+                tools:text="Marie" />
+
+            <ImageView
+                android:id="@+id/ic_location"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@+id/textView_subTitle_name"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_location_on_black_24dp" />
+
+            <ImageView
+                android:id="@+id/ic_phone"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@+id/ic_location"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_local_phone_black_24dp" />
+
+            <ImageView
+                android:id="@+id/ic_network"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_below="@+id/ic_phone"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_web_black_24dp" />
+
+            <TextView
+                android:id="@+id/textView_detail_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/ic_location"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/ic_location"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                tools:text="location" />
+
+            <TextView
+                android:id="@+id/textView_phoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/ic_phone"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/ic_phone"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                tools:text="0000 000 000 000" />
+
+            <TextView
+                android:id="@+id/textView_website"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/ic_network"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/ic_network"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp"
+                tools:text="face book" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:background="#FFF"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textView_aboutMe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/aboutMe_title"
+                android:textColor="@android:color/black"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/textView_aboutMe_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView_aboutMe"
+                android:layout_marginTop="10dp"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
