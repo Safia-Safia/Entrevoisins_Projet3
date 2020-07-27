@@ -1,6 +1,6 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
-import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.openclassrooms.entrevoisins.R;
@@ -37,8 +36,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         setUpToolbar();
         initNeighbourDetail();
         setFabBtn();
-        //TODO récupérer le statut du voisin pour afficher l'étoile pleine ou vide (setFavoriteStatus)
-
+        setFavoriteStatus();
     }
 
     private void initNeighbourDetail() {
@@ -71,6 +69,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         mToolbar.setTitle(mNeighbours.getName());
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
     }
 
     public void setFabBtn() {
@@ -78,25 +77,30 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isOnFavorite()) {
-                    Toast.makeText(NeighbourDetailActivity.this,
-                            "Neighbour already in the list", Toast.LENGTH_LONG).show();
-                    //TODO ajouter une méthode DeleteFromFavorite
-                    //TODO mettre tous les strings qu'on afffiche à l'utilisateur dans le fichier string.xml
-                } else {
+                   Snackbar.make(view, R.string.already_in_list,Snackbar.LENGTH_LONG).show();
+                   deleteFromFavorite();  //if the user click on star, the neighbour is delete from the list
+                }else{
                     addToFavorite();
-                    Snackbar.make(view, "Add on favorite", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Snackbar.make(view, R.string.add_to_favorite, Snackbar.LENGTH_LONG).show();
                 }
             }
         });
 
 
     }
-
+    public void deleteFromFavorite(){
+        isOnFavorite();
+        mFavorite_fab.setImageResource(R.drawable.ic_star_border_24dp);
+        mApiService.favoriteNeighbour().remove(mNeighbours);
+    }
+    public void setFavoriteStatus (){
+        if (isOnFavorite()) {
+            mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);
+        }
+    }
     public boolean isOnFavorite(){
         return mApiService.favoriteNeighbour().contains(mNeighbours);
     }
-
     public void addToFavorite(){
         mApiService.addFavoriteNeighbour(mNeighbours);
         mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);

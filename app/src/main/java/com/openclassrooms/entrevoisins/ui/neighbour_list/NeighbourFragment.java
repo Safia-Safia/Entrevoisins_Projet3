@@ -31,7 +31,6 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
     private RecyclerView mRecyclerView;
     public static final String KEY_NEIGHBOURS = "KEY_NEIGHBOURS";
     public static final String CURRENT_FRAGMENT = "CURRENT_FRAGMENT";
-    private int index;
 
     /**
      * Create and return a new instance
@@ -68,7 +67,7 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
      * Init the List of neighbours
      */
     private void initList() {
-        index = getArguments().getInt(CURRENT_FRAGMENT, 0);
+        int index = getArguments().getInt(CURRENT_FRAGMENT, 0);
         if (index == 0) {
             mNeighbours = mApiService.getNeighbours();
         } else {
