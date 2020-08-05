@@ -1,5 +1,8 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -88,19 +91,23 @@ public class NeighbourDetailActivity extends AppCompatActivity {
 
 
     }
+
     public void deleteFromFavorite(){
         isOnFavorite();
         mFavorite_fab.setImageResource(R.drawable.ic_star_border_24dp);
         mApiService.favoriteNeighbour().remove(mNeighbours);
     }
+
     public void setFavoriteStatus (){
         if (isOnFavorite()) {
             mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);
         }
     }
+
     public boolean isOnFavorite(){
         return mApiService.favoriteNeighbour().contains(mNeighbours);
     }
+
     public void addToFavorite(){
         mApiService.addFavoriteNeighbour(mNeighbours);
         mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);

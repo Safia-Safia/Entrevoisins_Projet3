@@ -98,4 +98,5 @@
     <string name="aboutMe_title">A propos de moi</string>
     <string name="already_in_list">Remove from favorite list.</string>
     <string name="add_to_favorite">Add on favorite.</string>
+    <string name="removing">You are removing %s</string>
 </resources>

@@ -68,4 +68,9 @@ public class NeighboursListTest {
         // Then : the number of element is 11
         onView(ViewMatchers.withId(R.id.list_neighbours)).check(withItemCount(ITEMS_COUNT-1));
     }
+
+    @Test
+    public void addOnFavoriteList(){
+        onView(withId(R.id.list_favorites_neighbours)).perform(click());
+    }
 }
