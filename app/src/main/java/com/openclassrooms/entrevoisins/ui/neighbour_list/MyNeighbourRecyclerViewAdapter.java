@@ -25,14 +25,16 @@ import butterknife.ButterKnife;
 public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeighbourRecyclerViewAdapter.ViewHolder> {
 
     private final List<Neighbour> mNeighbours;
-    private onNeighbourClickListener mOnNeighbourClickListener;
+    private onNeighbourClickListener mOnNeighbourClickListener; //so the ViewHolder will know what's this listener is
     private int mCurrentFragment;
 
-    public MyNeighbourRecyclerViewAdapter(List<Neighbour> items, onNeighbourClickListener onNeighbourClickListener, int mCurrentFragment) {
+    public MyNeighbourRecyclerViewAdapter(List<Neighbour> items,
+    onNeighbourClickListener onNeighbourClickListener, int mCurrentFragment) {
         mNeighbours = items;
         this.mCurrentFragment = mCurrentFragment;
         this.mOnNeighbourClickListener = onNeighbourClickListener;
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -90,7 +92,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
         }
     }
 
-    public interface onNeighbourClickListener {
-        void onNeighbourClick(int position);
+    public interface onNeighbourClickListener { //implement NeighbourFragment
+        void onNeighbourClick(int position); //send the position of the click item
     }
 }

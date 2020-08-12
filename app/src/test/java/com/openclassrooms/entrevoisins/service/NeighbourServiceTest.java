@@ -3,13 +3,13 @@ package com.openclassrooms.entrevoisins.service;
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 
-import org.hamcrest.collection.IsArrayContaining;
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -45,17 +45,17 @@ public class NeighbourServiceTest {
     }
 
     @Test
-    public void onNeighbourClick(){
-        Neighbour neighbourGot = service.getNeighbours().get(0);
-        Neighbour neighbourToGet = service.getNeighbours().get(0);
-        assertTrue(neighbourToGet.equals(neighbourGot));
+    public void getFavoriteNeighbours() {
+        List<Neighbour> neighbours = service.getFavoriteNeighbour();
+        List<Neighbour> expectedNeighbours = new ArrayList<>();
+        assertThat(neighbours, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedNeighbours.toArray()));
     }
 
     @Test
-    public void isOnFavorite(){
+    public void addtoFavorite(){
         //To check if the neighbour is on the favorite list
         Neighbour neighbourGot =service.getNeighbours().get(0);
-        List<Neighbour> favoriteNeighbourList = service.favoriteNeighbour();
+        List<Neighbour> favoriteNeighbourList = service.getFavoriteNeighbour();
         service.addFavoriteNeighbour(neighbourGot); //adding the neighbour 0 to the favorite list
         assertTrue(favoriteNeighbourList.contains(neighbourGot));
     }
@@ -63,8 +63,9 @@ public class NeighbourServiceTest {
     @Test
     public void deleteFromFavorite(){
         //To delete a neighbour from the favorite list
+        addtoFavorite();
         Neighbour favoriteNeighbourToDelete = service.getNeighbours().get(0);
-        List<Neighbour> favoriteNeighbourList = service.favoriteNeighbour();
+        List<Neighbour> favoriteNeighbourList = service.getFavoriteNeighbour();
         service.deleteFavoriteNeighbour(favoriteNeighbourToDelete);
         assertFalse(favoriteNeighbourList.contains(favoriteNeighbourToDelete));
     }

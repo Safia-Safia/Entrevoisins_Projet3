@@ -40,7 +40,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     }
 
     @Override
-    public List<Neighbour> favoriteNeighbour() {
+    public List<Neighbour> getFavoriteNeighbour() {
         return favoriteNeighboursList;
     }
 

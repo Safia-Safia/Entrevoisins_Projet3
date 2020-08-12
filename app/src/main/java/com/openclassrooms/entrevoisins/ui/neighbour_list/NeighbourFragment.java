@@ -37,10 +37,10 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance(int index) {
+    public static NeighbourFragment newInstance(int fragmentIndex) {
         NeighbourFragment fragment = new NeighbourFragment();
         Bundle args = new Bundle();
-        args.putInt(CURRENT_FRAGMENT, index);
+        args.putInt(CURRENT_FRAGMENT, fragmentIndex);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,13 +49,18 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_neighbour_list, container, false);
+        int getFragmentIndex = getArguments().getInt(CURRENT_FRAGMENT, 0);
+        View view;
+        if (getFragmentIndex == 0) {
+            view = inflater.inflate(R.layout.fragment_neighbour_list, container, false);
+        } else {
+            view = inflater.inflate(R.layout.fragment_favorite_neighbour_list, container, false);
+        }
         Context context = view.getContext();
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -67,13 +72,14 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
      * Init the List of neighbours
      */
     private void initList() {
-        int index = getArguments().getInt(CURRENT_FRAGMENT, 0);
-        if (index == 0) {
+        int getFragmentIndex = getArguments().getInt(CURRENT_FRAGMENT, 0);
+        if (getFragmentIndex == 0) {
             mNeighbours = mApiService.getNeighbours();
         } else {
-            mNeighbours = mApiService.favoriteNeighbour();
+            mNeighbours = mApiService.getFavoriteNeighbour();
         }
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours, this, index));
+        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter
+                (mNeighbours, this, getFragmentIndex));
     }
 
     @Override
@@ -113,7 +119,8 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
 
     @Override
     public void onNeighbourClick(int position) {
-        Intent NeighbourDetailIntent = new Intent(NeighbourFragment.this.getActivity(), NeighbourDetailActivity.class);
+        Intent NeighbourDetailIntent = new Intent(NeighbourFragment.this.getActivity(),
+                                           NeighbourDetailActivity.class);
         NeighbourDetailIntent.putExtra(KEY_NEIGHBOURS, mNeighbours.get(position));
         startActivity(NeighbourDetailIntent);
     }

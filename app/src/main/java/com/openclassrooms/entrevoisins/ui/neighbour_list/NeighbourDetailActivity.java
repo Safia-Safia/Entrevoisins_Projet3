@@ -1,8 +1,5 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -49,12 +46,11 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         phoneView.setText(mNeighbours.getPhoneNumber());
         networkView.setText(String.format("%s%s", getString(R.string.txt_website), mNeighbours.getName()));
         descriptionView.setText(mNeighbours.getAboutMe());
-
     }
 
     public void setUpView() {
         mApiService = DI.getNeighbourApiService();
-        mNeighbours = getIntent().getParcelableExtra(NeighbourFragment.KEY_NEIGHBOURS);
+        mNeighbours = getIntent().getParcelableExtra(NeighbourFragment.KEY_NEIGHBOURS);//Get the neighbour detail from the Neighbour Fragment
         mFavorite_fab = findViewById(R.id.fab_favorite);
         mToolbar = findViewById(R.id.toolbar);
         mCollapsingToolbar = findViewById(R.id.collapsingToolbar);
@@ -71,46 +67,8 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         mCollapsingToolbar.setExpandedTitleColor(getResources().getColor(android.R.color.white));
         mToolbar.setTitle(mNeighbours.getName());
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); //For back Btn
         mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
-    }
-
-    public void setFabBtn() {
-        mFavorite_fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isOnFavorite()) {
-                   Snackbar.make(view, R.string.already_in_list,Snackbar.LENGTH_LONG).show();
-                   deleteFromFavorite();  //if the user click on star, the neighbour is delete from the list
-                }else{
-                    addToFavorite();
-                    Snackbar.make(view, R.string.add_to_favorite, Snackbar.LENGTH_LONG).show();
-                }
-            }
-        });
-
-
-    }
-
-    public void deleteFromFavorite(){
-        isOnFavorite();
-        mFavorite_fab.setImageResource(R.drawable.ic_star_border_24dp);
-        mApiService.favoriteNeighbour().remove(mNeighbours);
-    }
-
-    public void setFavoriteStatus (){
-        if (isOnFavorite()) {
-            mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);
-        }
-    }
-
-    public boolean isOnFavorite(){
-        return mApiService.favoriteNeighbour().contains(mNeighbours);
-    }
-
-    public void addToFavorite(){
-        mApiService.addFavoriteNeighbour(mNeighbours);
-        mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);
     }
 
     @Override
@@ -120,4 +78,45 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    public void setFabBtn() {
+        mFavorite_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isOnFavorite()) {
+                   Snackbar.make(view, R.string.already_in_list,Snackbar.LENGTH_LONG).show();
+                   deleteFromFavorite();
+                }else{
+                    addToFavorite();
+                    Snackbar.make(view, R.string.add_to_favorite, Snackbar.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    public void addToFavorite(){
+        //Add the neighbour in the favorite list
+        mApiService.addFavoriteNeighbour(mNeighbours);
+        mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);
+    }
+
+    public boolean isOnFavorite(){
+        //Check if the neighbour is already in the list
+        return mApiService.getFavoriteNeighbour().contains(mNeighbours);
+    }
+
+    public void setFavoriteStatus (){
+        //If the neighbour is in the list, the star stay full
+        if (isOnFavorite()) {
+            mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);
+        }
+    }
+
+    public void deleteFromFavorite(){
+        //If the user click on the favorite btn again, the neighbour is removed from the lis
+        isOnFavorite();
+        mFavorite_fab.setImageResource(R.drawable.ic_star_border_24dp);
+        mApiService.getFavoriteNeighbour().remove(mNeighbours);
+    }
+
 }
