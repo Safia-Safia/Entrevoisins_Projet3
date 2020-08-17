@@ -1,26 +1,22 @@
 
 package com.openclassrooms.entrevoisins.neighbour_list;
 
-
-import android.support.test.espresso.ViewAssertion;
-import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.view.View;
 
 import com.openclassrooms.entrevoisins.R;
-import com.openclassrooms.entrevoisins.model.Neighbour;
+import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
 import com.openclassrooms.entrevoisins.utils.DeleteViewAction;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 
-import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.pressBack;
@@ -28,13 +24,9 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition;
 import static android.support.test.espresso.matcher.ViewMatchers.assertThat;
 import static android.support.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
-import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
-import static android.support.test.espresso.matcher.ViewMatchers.isClickable;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.openclassrooms.entrevoisins.utils.RecyclerViewItemCountAssertion.withItemCount;
-import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 
 
@@ -57,6 +49,11 @@ public class NeighboursListTest {
     public void setUp() {
         mActivity = mActivityRule.getActivity();
         assertThat(mActivity, notNullValue());
+    }
+
+    @After
+    public void cleanUp(){
+        DI.getNeighbourApiService().getFavoriteNeighbour().clear();
     }
 
     /**
@@ -88,17 +85,12 @@ public class NeighboursListTest {
         onView(ViewMatchers.withId(R.id.list_neighbours)).perform(actionOnItemAtPosition(0, click()));
         onView(ViewMatchers.withId(R.id.fab_favorite)).perform(click());
         onView(ViewMatchers.withId(R.id.neighbour_detail)).perform(pressBack());
-    }
-
-    @Test
-    public void favoriteFragment(){
         onView(withText("Favorites")).perform(click());
     }
 
     @Test
     public void deleteFromFavorite(){
         addOnFavoriteList();
-        favoriteFragment();
         onView(ViewMatchers.withId(R.id.favorite_list_neighbours))
                 .perform(actionOnItemAtPosition(0, new DeleteViewAction()));
         onView(withText("MY NEIGHBOURS")).perform(click());
@@ -107,11 +99,11 @@ public class NeighboursListTest {
     @Test
     public void removeFromFavorite(){
         addOnFavoriteList();
-        favoriteFragment();
         onView(withId(R.id.favorite_list_neighbours)).perform(actionOnItemAtPosition(0, click()));
         onView(ViewMatchers.withId(R.id.fab_favorite)).perform(click());
         onView(ViewMatchers.withId(R.id.neighbour_detail)).perform(pressBack());
         onView(withText("MY NEIGHBOURS")).perform(click());
     }
+
 
 }

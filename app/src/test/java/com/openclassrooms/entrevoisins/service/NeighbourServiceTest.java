@@ -12,7 +12,6 @@ import org.junit.runners.JUnit4;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -46,14 +45,15 @@ public class NeighbourServiceTest {
 
     @Test
     public void getFavoriteNeighbours() {
-        List<Neighbour> neighbours = service.getFavoriteNeighbour();
-        List<Neighbour> expectedNeighbours = new ArrayList<>();
-        assertThat(neighbours, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedNeighbours.toArray()));
+        List<Neighbour> favoriteNeighbours = service.getFavoriteNeighbour();
+        List<Neighbour> expectedFavorites = new  ArrayList<>();
+        assertThat(favoriteNeighbours, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedFavorites.toArray()));
     }
 
     @Test
-    public void addtoFavorite(){
+    public void addToFavorite(){
         //To check if the neighbour is on the favorite list
+        service.getFavoriteNeighbour().clear();
         Neighbour neighbourGot =service.getNeighbours().get(0);
         List<Neighbour> favoriteNeighbourList = service.getFavoriteNeighbour();
         service.addFavoriteNeighbour(neighbourGot); //adding the neighbour 0 to the favorite list
@@ -63,7 +63,7 @@ public class NeighbourServiceTest {
     @Test
     public void deleteFromFavorite(){
         //To delete a neighbour from the favorite list
-        addtoFavorite();
+        addToFavorite();
         Neighbour favoriteNeighbourToDelete = service.getNeighbours().get(0);
         List<Neighbour> favoriteNeighbourList = service.getFavoriteNeighbour();
         service.deleteFavoriteNeighbour(favoriteNeighbourToDelete);
