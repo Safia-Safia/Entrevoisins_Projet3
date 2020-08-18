@@ -18,15 +18,31 @@ import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class NeighbourDetailActivity extends AppCompatActivity {
     private Neighbour mNeighbours;
-    private ImageView avatarView;
     private NeighbourApiService mApiService;
-    private TextView nameView, addressView, phoneView, networkView, descriptionView;
-    private Toolbar mToolbar;
-    private CollapsingToolbarLayout mCollapsingToolbar;
-    private FloatingActionButton mFavorite_fab;
+    @BindView(R.id.textView_subTitle_name)
+    TextView nameView;
+    @BindView(R.id.textView_phoneNumber)
+    TextView phoneView;
+    @BindView(R.id.textView_detail_address)
+    TextView addressView;
+    @BindView(R.id.textView_website)
+    TextView networkView;
+    @BindView(R.id.textView_aboutMe_detail)
+    TextView descriptionView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.toolbarImage)
+    ImageView avatarView;
+    @BindView(R.id.collapsingToolbar)
+    CollapsingToolbarLayout mCollapsingToolbar;
+    @BindView(R.id.fab_favorite)
+    FloatingActionButton mFavorite_fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +67,7 @@ public class NeighbourDetailActivity extends AppCompatActivity {
     public void setUpView() {
         mApiService = DI.getNeighbourApiService();
         mNeighbours = getIntent().getParcelableExtra(NeighbourFragment.KEY_NEIGHBOURS);//Get the neighbour detail from the Neighbour Fragment
-        mFavorite_fab = findViewById(R.id.fab_favorite);
-        mToolbar = findViewById(R.id.toolbar);
-        mCollapsingToolbar = findViewById(R.id.collapsingToolbar);
-        avatarView = findViewById(R.id.toolbarImage);
-        nameView = findViewById(R.id.textView_subTitle_name);
-        addressView = findViewById(R.id.textView_detail_address);
-        phoneView = findViewById(R.id.textView_phoneNumber);
-        networkView = findViewById(R.id.textView_website);
-        descriptionView = findViewById(R.id.textView_aboutMe_detail);
+        ButterKnife.bind(this);
     }
 
     public void setUpToolbar() {
@@ -84,9 +92,9 @@ public class NeighbourDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (isOnFavorite()) {
-                   Snackbar.make(view, R.string.already_in_list,Snackbar.LENGTH_LONG).show();
-                   deleteFromFavorite();
-                }else{
+                    Snackbar.make(view, R.string.already_in_list, Snackbar.LENGTH_LONG).show();
+                    deleteFromFavorite();
+                } else {
                     addToFavorite();
                     Snackbar.make(view, R.string.add_to_favorite, Snackbar.LENGTH_LONG).show();
                 }
@@ -94,25 +102,25 @@ public class NeighbourDetailActivity extends AppCompatActivity {
         });
     }
 
-    public void addToFavorite(){
+    public void addToFavorite() {
         //Add the neighbour in the favorite list
         mApiService.addFavoriteNeighbour(mNeighbours);
         mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);
     }
 
-    public boolean isOnFavorite(){
+    public boolean isOnFavorite() {
         //Check if the neighbour is already in the list
         return mApiService.getFavoriteNeighbour().contains(mNeighbours);
     }
 
-    public void setFavoriteStatus (){
+    public void setFavoriteStatus() {
         //If the neighbour is in the list, the star stay full
         if (isOnFavorite()) {
             mFavorite_fab.setImageResource(R.drawable.ic_star_yellow);
         }
     }
 
-    public void deleteFromFavorite(){
+    public void deleteFromFavorite() {
         //If the user click on the favorite btn again, the neighbour is removed from the lis
         isOnFavorite();
         mFavorite_fab.setImageResource(R.drawable.ic_star_border_24dp);

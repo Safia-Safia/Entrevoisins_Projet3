@@ -45,6 +45,7 @@ public class NeighbourServiceTest {
 
     @Test
     public void getFavoriteNeighbours() {
+        //get the Favorite List
         List<Neighbour> favoriteNeighbours = service.getFavoriteNeighbour();
         List<Neighbour> expectedFavorites = new  ArrayList<>();
         assertThat(favoriteNeighbours, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedFavorites.toArray()));
